@@ -21,3 +21,16 @@ for f in files:
     print('download:', url)
     if not os.path.exists(loc):
         req.urlretrieve(url, loc)
+
+# uncompress
+for f in files:
+    gz_file = savepath + "/" + f
+    raw_file = savepath + "/" + f.replace(".gz", "")
+    print("gzip:", f)
+    with gzip.open(gz_file, "rb") as fp:
+        body = fp.read()
+        with open(raw_file, "wb") as w:
+            w.write(body)
+print("complete")
+
+
