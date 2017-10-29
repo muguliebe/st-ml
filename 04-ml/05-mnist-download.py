@@ -1,5 +1,6 @@
+import gzip
+import os.path
 import urllib.request as req
-import gzip, os, os.path
 
 # prepare for download
 savepath = './mnist'
@@ -32,5 +33,3 @@ for f in files:
         with open(raw_file, "wb") as w:
             w.write(body)
 print("complete")
-
-
