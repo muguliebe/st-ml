@@ -106,3 +106,9 @@ ENV/
 # compressed files
 *gz
 **/mnist/
+
+**/lang/
+*.txt
+*.png
+*.csv
+*.pkl
