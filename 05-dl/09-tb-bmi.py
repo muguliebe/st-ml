@@ -21,20 +21,26 @@ test_ans = list(test_csv["label_pat"])
 
 # 데이터 플로우 그래프 구출하기 --- (※5)
 # 플레이스홀더 선언하기
-x  = tf.placeholder(tf.float32, [None, 2]) # 키와 몸무게 데이터 넣기
-y_ = tf.placeholder(tf.float32, [None, 3]) # 정답 레이블 넣기
+x  = tf.placeholder(tf.float32, [None, 2], name='x') # 키와 몸무게 데이터 넣기
+y_ = tf.placeholder(tf.float32, [None, 3], name='y_') # 정답 레이블 넣기
 
-# 변수 선언하기 --- (※6)
-W = tf.Variable(tf.zeros([2, 3])); # 가중치
-b = tf.Variable(tf.zeros([3])); # 바이어스
+# interface
+with tf.name_scope('interface') as scope:
+    # 변수 선언하기 --- (※6)
+    W = tf.Variable(tf.zeros([2, 3]), name='W') # 가중치
+    b = tf.Variable(tf.zeros([3]), name='b') # 바이어스
 
-# 소프트맥스 회귀 정의하기 --- (※7)
-y = tf.nn.softmax(tf.matmul(x, W) + b)
+    # 소프트맥스 회귀 정의하기 --- (※7)
+    with tf.name_scope('softmax') as scope:
+        y = tf.nn.softmax(tf.matmul(x, W) + b)
 
 # 모델 훈련하기 --- (※8)
-cross_entropy = -tf.reduce_sum(y_ * tf.log(y))
-optimizer = tf.train.GradientDescentOptimizer(0.01)
-train = optimizer.minimize(cross_entropy)
+with tf.name_scope('loss') as scope:
+    cross_entropy = -tf.reduce_sum(y_ * tf.log(y))
+
+with tf.name_scope('training') as scope:
+    optimizer = tf.train.GradientDescentOptimizer(0.01)
+    train = optimizer.minimize(cross_entropy)
 
 # 정답률 구하기
 predict = tf.equal(tf.argmax(y, 1), tf.argmax(y_,1))
