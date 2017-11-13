@@ -112,3 +112,5 @@ ENV/
 *.png
 *.csv
 *.pkl
+.DS_Store
+*.model
